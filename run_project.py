@@ -61,13 +61,15 @@ def main():
 
         # Drop existing tables (clean slate)
         print("\n[2] Cleaning existing tables...")
-        cursor.execute("""
+        cursor.execute(
+            """
             DROP TABLE IF EXISTS investor_identification CASCADE;
             DROP TABLE IF EXISTS investor_nominee CASCADE;
             DROP TABLE IF EXISTS investor_bank CASCADE;
             DROP TABLE IF EXISTS investor CASCADE;
             DROP TABLE IF EXISTS scoring_rules CASCADE;
-        """)
+        """
+        )
         print("  ✓ Tables cleaned")
 
         # Run SQL files
@@ -78,7 +80,9 @@ def main():
 
         # Test random code generator
         print("\n[4] Testing random code generator...")
-        cursor.execute("SELECT generate_random_number('INV', 'investor', 'investor_code', 10)")
+        cursor.execute(
+            "SELECT generate_random_number('INV', 'investor', 'investor_code', 10)"
+        )
         result = cursor.fetchone()[0]
         print(f"  ✓ Generated code: {result}")
 
@@ -87,18 +91,22 @@ def main():
         with open(base_path / QUERY_FILE, "r") as f:
             query = f.read()
         cursor.execute(query)
-        
+
         # Display results
         columns = [desc[0] for desc in cursor.description]
         rows = cursor.fetchall()
-        
+
         print("\n" + "-" * 80)
-        print(f"{'Investor':<12} {'Contact':<10} {'Photo':<8} {'Bank':<8} {'Nominee':<10} {'KYC':<8} {'Total':<10}")
+        print(
+            f"{'Investor':<12} {'Contact':<10} {'Photo':<8} {'Bank':<8} {'Nominee':<10} {'KYC':<8} {'Total':<10}"
+        )
         print("-" * 80)
-        
+
         for row in rows:
-            print(f"{row[0]:<12} {row[1]:<10} {row[2]:<8} {row[3]:<8} {row[4]:<10} {row[5]:<8} {row[6]:<10}")
-        
+            print(
+                f"{row[0]:<12} {row[1]:<10} {row[2]:<8} {row[3]:<8} {row[4]:<10} {row[5]:<8} {row[6]:<10}"
+            )
+
         print("-" * 80)
         print("\n✓ Project executed successfully!")
 
